@@ -34,15 +34,19 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(express.json());
 app.use(cookieParser()); 
+// app.use(cors({
+//     origin: [
+//         'http://localhost:5173',
+//         'http://localhost:5174',
+//         'https://authjwtfrontend.vercel.app',
+//         'https://authjwtfrontend-git-main-ankit-webtechs-projects.vercel.app',
+//     ],
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+// }));
 app.use(cors({
-    origin: [
-        'http://localhost:5173',
-        'http://localhost:5174',
-        'https://authjwtfrontend.vercel.app',
-        'https://authjwtfrontend-git-main-ankit-webtechs-projects.vercel.app',
-    ],
+    origin: true,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
 
 
