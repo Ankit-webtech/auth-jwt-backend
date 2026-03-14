@@ -42,12 +42,12 @@ app.use(cors({
             process.env.FRONTEND_URL,
         ];
         
-        // Allow requests with no origin (mobile apps, postman)
         if(!origin) return callback(null, true);
         
         if(allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
+            console.log("Blocked origin:", origin); // debug ke liye
             callback(new Error('Not allowed by CORS'));
         }
     },
