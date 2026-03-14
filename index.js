@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import {createClient} from "redis";
 import cookieParser from "cookie-parser"; 
-// import cors from 'cors';
+import cors from 'cors';
 
 
 const app = express();
@@ -45,7 +45,6 @@ app.use(cookieParser());
 //     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 // }));
 
-import cors from "cors";
 
 app.use(cors({
   origin: "https://authjwtfrontend.vercel.app",
