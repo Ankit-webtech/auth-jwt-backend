@@ -51,6 +51,11 @@ app.use(cors({
   credentials: true
 }));
 
+// Root route
+app.get("/", (req, res) => {
+  res.json({ message: "Auth JWT Backend is running" });
+});
+
 // Routes
 import userRoute from "./routes/userRoute.js";
 app.use("/api/v1", userRoute);
