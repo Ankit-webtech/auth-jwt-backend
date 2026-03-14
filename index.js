@@ -35,22 +35,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser()); 
 app.use(cors({
-    origin: function(origin, callback) {
-        const allowedOrigins = [
-            'http://localhost:5173',
-            'http://localhost:5174',
-            process.env.FRONTEND_URL,
-        ];
-        
-        if(!origin) return callback(null, true);
-        
-        if(allowedOrigins.includes(origin)) {
-            callback(null, true);
-        } else {
-            console.log("Blocked origin:", origin); // debug ke liye
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:5174',
+        'https://authjwtfrontend.vercel.app',
+        'https://authjwtfrontend-git-main-ankit-webtechs-projects.vercel.app',
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
