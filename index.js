@@ -15,18 +15,23 @@ await connectDB();
 
 ////// Redis Client Setup
 const redisUrl = process.env.REDIS_URL;
-if (!redisUrl) {
-    console.error("REDIS_URL is not defined in .env file");
-    process.exit(1);
-}
-export const redisClient = createClient({
-    url: redisUrl,
-});
+export let redisClient = null;
 
-redisClient.connect().then(() => console.log("connected to redis")).catch((err) => {
-    console.error("Failed to connect to Redis", err.message);
-    process.exit(1);
-});
+if (redisUrl) {
+    redisClient = createClient({
+        url: redisUrl,
+    });
+
+    redisClient.connect()
+        .then(() => console.log("✅ Connected to Redis"))
+        .catch((err) => {
+            console.warn("⚠️ Redis connection failed:", err.message);
+            console.warn("⚠️ Continuing without Redis...");
+            redisClient = null;
+        });
+} else {
+    console.warn("⚠️ REDIS_URL not defined - running without Redis");
+}
 
 ////// Server Setup
 const PORT = process.env.PORT || 5000;
