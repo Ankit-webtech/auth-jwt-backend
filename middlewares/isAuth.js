@@ -35,16 +35,15 @@ export const isAuth = async (req, res, next) => {
 
     // Check Redis Cache first
 const cacheUser = redisClient ? await redisClient.get(`user:${decodedData.id}`) : null;
-// ...
-if (redisClient) {
-  await redisClient.setEx(`user:${user._id}`, 3600, JSON.stringify(user));
-}
 
     if (cacheUser) {
       req.user = JSON.parse(cacheUser);
       req.sessionId = decodedData.sessionId;
       return next();
     }
+ if (redisClient) {
+  await redisClient.setEx(`user:${user._id}`, 3600, JSON.stringify(user));
+}
 
     ///////Declare user FIRST
     const user = await User.findById(decodedData.id).select("-password");

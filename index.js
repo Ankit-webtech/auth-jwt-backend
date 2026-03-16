@@ -17,13 +17,13 @@ app.use(cookieParser());
 // cors
 app.use(cors({
   origin: function(origin, callback) {
-   const allowedOrigins = [
+  const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
-  'https://authjwtfrontend.vercel.app',
-  'https://auth-jwtfrontend.vercel.app',     
-  'https://auth-jwt-frontend.vercel.app',      
+  'https://auth-jwtfrontend.vercel.app',
+  'https://auth-jwtfrontend.vercel.app', 
 ];
+
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
