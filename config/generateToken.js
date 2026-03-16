@@ -133,13 +133,12 @@ export const revokeRefreshToken = async(userId) => {
 };
 
 
+
 export const isSessionActive = async(userId, sessionId) => {
-     const activeSessionId = await redisClient.get(`active_session:${userId}`); 
-
-     console.log(activeSessionId);
-     return activeSessionId === sessionId;
+  if (!redisClient) return true; ///// Redis nahi hai to allow karo
+  const activeSessionId = await redisClient.get(`active_session:${userId}`);
+  return activeSessionId === sessionId;
 };
-
 
 
 

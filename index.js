@@ -6,9 +6,31 @@ import cookieParser from "cookie-parser";
 import cors from 'cors';
 
 
-const app = express();
-app.use(express.urlencoded({ extended: true }))
+
 dotenv.config();
+const app = express();
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser()); 
+// cors
+app.use(cors({
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://localhost:5174',
+      'https://authjwtfrontend.vercel.app',
+    ];
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+}));
 
 await connectDB();
 
@@ -33,39 +55,30 @@ if (redisUrl) {
     console.warn("⚠️ REDIS_URL not defined - running without Redis");
 }
 
+
+
+
 ////// Server Setup
 const PORT = process.env.PORT || 5000;
 
-// Middleware
-app.use(express.json());
-app.use(cookieParser()); 
-// app.use(cors({
-//     origin: [
-//         'http://localhost:5173',
-//         'http://localhost:5174',
-//         'https://authjwtfrontend.vercel.app',
-//         'https://authjwtfrontend-git-main-ankit-webtechs-projects.vercel.app',
-//     ],
-//     credentials: true,
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-// }));
 
 
-app.use(cors({
-  origin: "https://authjwtfrontend.vercel.app",
-  credentials: true
-}));
 
-// Root route
+///// Root route
 app.get("/", (req, res) => {
   res.json({ message: "Auth JWT Backend is running" });
 });
 
-// Routes
+
+
+/////// Routes
 import userRoute from "./routes/userRoute.js";
 app.use("/api/v1", userRoute);
 
-// Start the server
+
+
+
+///////// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 }); 

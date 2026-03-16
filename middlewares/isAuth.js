@@ -34,7 +34,8 @@ export const isAuth = async (req, res, next) => {
     }
 
     // Check Redis Cache first
-    const cacheUser = await redisClient.get(`user:${decodedData.id}`);
+const cacheUser = redisClient ? await redisClient.get(`user:${decodedData.id}`) : null;
+
     if (cacheUser) {
       req.user = JSON.parse(cacheUser);
       req.sessionId = decodedData.sessionId;

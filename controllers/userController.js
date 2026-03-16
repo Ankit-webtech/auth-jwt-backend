@@ -380,7 +380,7 @@ export const logoutUser = TryCatch(async(req,res) => {
   res.clearCookie("accessToken");
   res.clearCookie("csrfToken");
 
-  await redisClient.del(`user:${userId}`);
+if (redisClient) await redisClient.del(`user:${userId}`);
 
   res.json({
     message:"Logged out successfully",
