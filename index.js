@@ -25,24 +25,46 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // ===== CORS Configuration =====
+// const allowedOrigins = process.env.NODE_ENV === "production"
+//   ? [process.env.FRONTEND_URL]
+//   : ["http://localhost:5173", "http://localhost:5174"];
+
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // allow requests with no origin (like Postman)
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error("Not allowed by CORS"));
+//       }
+//     },
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   })
+// );
+
 const allowedOrigins = process.env.NODE_ENV === "production"
-  ? [process.env.FRONTEND_URL]
+  ? [
+      process.env.FRONTEND_URL,
+      process.env.FRONTEND_URL?.replace(/\/$/, ""), // trailing slash remove
+    ].filter(Boolean)
   : ["http://localhost:5173", "http://localhost:5174"];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  })
-);
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      // Debug ke liye log karo — baad mein hatayenge
+      console.log("CORS blocked origin:", origin);
+      console.log("Allowed origins:", allowedOrigins);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}));
 
 
 ////// rate limiting ========
