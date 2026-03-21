@@ -38,7 +38,7 @@ export const registerUser = TryCatch(async (req, res) => {
   }
 
   ///// If validation is successful, you can access the validated data using validation.data
-  const { name, email, password } = validation.data;
+  let { name, email, password } = validation.data;
 
   ///ratelimiting logic will be here
   const rateLimitKey = `register-rate-limit:${req.ip}:${email}`;
@@ -261,7 +261,7 @@ export const loginUser = TryCatch(async (req, res) => {
 //////////////////          verify OTP
 
 export const verifyOtp = TryCatch(async (req, res) => {
-  const { email, otp } = req.body;
+  let { email, otp } = req.body;
 
   if (!email || !otp) {
     return res.status(400).json({
@@ -380,7 +380,7 @@ export const logoutUser = TryCatch(async(req,res) => {
   res.clearCookie("accessToken");
   res.clearCookie("csrfToken");
 
-if (redisClient) await redisClient.del(`user:${userId}`);
+if (redisClient) await redisClient.del(`user:${userId.toString()}`);
 
   res.json({
     message:"Logged out successfully",
