@@ -75,7 +75,14 @@ export const registerUser = TryCatch(async (req, res) => {
   const subject = "Verify your email for Account creation ";
   const html = getVerifyEmailHtml({ email, token: verifyToken });
 
+  try {
   await sendMail(email, subject, html);
+} catch (mailError) {
+  console.error("Mail send failed:", mailError.message);
+  return res.status(500).json({
+    message: "Failed to send verification email. Check SMTP settings.",
+  });
+}
   await redisClient.set(rateLimitKey, "true", { EX: 60 });
 
   res.json({
