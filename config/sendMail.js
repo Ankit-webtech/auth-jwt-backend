@@ -5,8 +5,8 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const sendMail = async (email, subject, html) => {
   const { error } = await resend.emails.send({
     from: 'Auth App <onboarding@resend.dev>',
-    to: email,
-    subject,
+    to: 'adankitnagar@gmail.com', 
+    subject: `[To: ${email}] ${subject}`,
     html,
   });
 
@@ -16,7 +16,6 @@ const sendMail = async (email, subject, html) => {
 };
 
 export default sendMail;
-
 
 
 // import { createTransport } from 'nodemailer';
