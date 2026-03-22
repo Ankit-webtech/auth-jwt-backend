@@ -58,8 +58,8 @@ app.use(cors({
       callback(null, true);
     } else {
       // Debug ke liye log karo — baad mein hatayenge
-      console.log("CORS blocked origin:", origin);
-      console.log("Allowed origins:", allowedOrigins);
+      // console.log("CORS blocked origin:", origin);
+      // console.log("Allowed origins:", allowedOrigins);
       callback(new Error("Not allowed by CORS"));
     }
   },
